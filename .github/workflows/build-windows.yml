@@ -1,6 +1,7 @@
 name: Build Windows
 
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
 
 jobs:
   build-windows:
@@ -13,18 +14,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: npm install
+          node-version: lts/*
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: x86_64-pc-windows-msvc
 
-      - name: Build Tauri app
-        run: npm run tauri build
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Build Tauri
+        uses: tauri-apps/tauri-action@v0
+        with:
+          args: ''
 
       - name: Upload Windows installers
         uses: actions/upload-artifact@v4
